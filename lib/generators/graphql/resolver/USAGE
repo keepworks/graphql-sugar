@@ -1,0 +1,8 @@
+Description:
+    Creates a GraphQL::Sugar Resolver.
+
+Example:
+    rails generate graphql:resolver Thing
+
+    This will create:
+        app/graphql/resolvers/thing_resolver.rb

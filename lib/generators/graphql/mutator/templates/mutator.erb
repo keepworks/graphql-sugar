@@ -1,0 +1,15 @@
+class <%= class_name %>Mutator < ApplicationMutator
+  <%= class_name %>InputType = GraphQL::InputObjectType.define do
+    name '<%= class_name %>Input'
+
+    parameter :id, !types.ID
+  end
+
+  parameter :input, !<%= class_name %>InputType
+
+  <%- type_name = file_name.split('_').drop(1).join('_').camelize -%>
+  type !Types::<%= type_name %>Type
+
+  def mutate
+  end
+end

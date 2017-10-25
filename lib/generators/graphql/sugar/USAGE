@@ -1,0 +1,10 @@
+Description:
+    Installs GraphQL::Sugar
+
+Example:
+    rails generate graphql:sugar
+
+    This will create:
+        app/graphql/functions/application_function.rb
+        app/graphql/resolvers/application_resolver.rb
+        app/graphql/mutators/application_mutator.rb

@@ -1,0 +1,8 @@
+Description:
+    Creates a GraphQL::Sugar Mutator.
+
+Example:
+    rails generate graphql:mutator Thing
+
+    This will create:
+      app/graphql/mutators/thing_mutator.rb
