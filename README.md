@@ -50,7 +50,7 @@ Types::PostType = GraphQL::ObjectType.define do
 end
 ```
 
-Create a *Resolver*:
+Create a [Resolver](#resolvers):
 
 ```ruby
 class PostResolver < ApplicationResolver
@@ -87,7 +87,7 @@ Inputs::PostInputType = GraphQL::InputObjectType.define do
 end
 ```
 
-Create a *Mutator*:
+Create a [Mutator](#mutators):
 
 ```ruby
 class CreatePostMutator < ApplicationMutator
@@ -143,7 +143,7 @@ Types::PostType = GraphQL::ObjectType.define do
 end
 ```
 
-The `model_class` declaration is **required** to use rest of the extended ObjectType DSL (like [`attributes`](#attributes), [`attribute`](#attribute), [`relationships`](#relationships), [`relationship`](#relationship), etc). If you forget to declare it however, a helpful exception is raised. :smile:
+The `model_class` declaration is **required** to use rest of the extended ObjectType DSL (like `attributes`, `attribute`, `relationships`, `relationship`, etc). If you forget to declare it however, a helpful exception is raised. :smile:
 
 #### Defining attributes
 
@@ -398,9 +398,17 @@ class PostResolver < ApplicationResolver
 end
 ```
 
-The benefit is that all `parameter`s (read: arguments) are loaded into a `params` object, with all keys transformed into snake_case. This allows them to be easily used with ActiveRecord methods like `where()` and `find_by()`.
+The benefit is that all `parameter`s (read: arguments) are loaded into a `params` object, with all keys transformed into snake_case. This allows them to be easily used with ActiveRecord methods like `where` and `find_by`.
 
+You also have `object` and `context` available in your resolve method:
 
+```ruby
+class PostsResolver < ApplicationResolver
+  def resolve
+    (object || context[:current_user]).posts
+  end
+end
+```
 
 #### Thinking in Graphs *using Resolvers*
 
@@ -447,7 +455,7 @@ end
 
 ### Mutators
 
-Create a *Mutator*:
+In its simplest form, a Mutator simply inherits from `ApplicationMutator` and contains a `#mutate` method:
 
 ```ruby
 class CreatePostMutator < ApplicationMutator
@@ -461,13 +469,30 @@ class CreatePostMutator < ApplicationMutator
 end
 ```
 
-Expose the Mutator:
+To expose the mutator as a field, declare it in your root MutationType:
 
 ```ruby
 Types::MutationType = GraphQL::ObjectType.define do
   name 'Mutation'
 
   mutator :createPost
+end
+```
+
+Just like resolvers, you have access to `object`, `params` and `context`:
+
+```ruby
+class UpdatePostMutator < ApplicationMutator
+  parameter :id, !types.ID
+  parameter :input, !Inputs::PostInputType
+
+  type !Types::PostType
+
+  def mutate
+    post = context[:current_user].posts.find(params[:id])
+    post.update_attributes!(params[:input])
+    post
+  end
 end
 ```
 
@@ -485,7 +510,7 @@ All your resolvers inherit from `ApplicationResolver` and all your mutators inhe
 
 #### Applying OO principles
 
-**Pagination and Sorting:** You can easily create methods that enable common features.
+*Pagination and Sorting:* You can easily create methods that enable common features.
 
 ```ruby
 class ApplicationResolver < ApplicationFunction
@@ -510,11 +535,11 @@ class PostsResolver < ApplicationResolver
 end
 ```
 
-**Shared Code:** You can also easily share common code across a specific set of mutators. For example, your `CreatePostMutator` and `UpdatePostMutator` could inherit from `PostMutator`, which inherits from `ApplicationMutator`.
+*Shared Code:* You can also easily share common code across a specific set of mutators. For example, your `CreatePostMutator` and `UpdatePostMutator` could inherit from `PostMutator`, which inherits from `ApplicationMutator`.
 
 #### Tips for Large Applications
 
-In a large app, you can quite easily end up with tons of mutations. GraphQL::Sugar does a bit of globbing in your eager_load_paths so you can group them in folders, while maintaining mutations at the root level. For example,
+In a large app, you can quite easily end up with tons of mutations. During setup, GraphQL::Sugar adds a few lines to your eager_load_paths so you can group them in folders, while maintaining mutations at the root level. For example,
 
 ```
 # Folder Structure
@@ -554,7 +579,7 @@ Creates a `CreateBlogPostMutator` class under `app/graphql/mutators/create_blog_
 
 ## Credits
 
-Many thanks to the work done by the authors of the following gems, which gem uses as a foundation and/or inspiration:
+Many thanks to the work done by the authors of the following gems, which this gem uses as a foundation and/or inspiration:
 
 - [graphql-ruby](https://github.com/rmosolgo/graphql-ruby)
 - [graphql-activerecord](https://github.com/goco-inc/graphql-activerecord)
@@ -566,12 +591,6 @@ Many thanks to the work done by the authors of the following gems, which gem use
 Maintained and sponsored by [KeepWorks](http://www.keepworks.com).
 
 ![KeepWorks](http://www.keepworks.com/assets/logo-800bbf55fabb3427537cf669dc8cd018.png "KeepWorks")
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
