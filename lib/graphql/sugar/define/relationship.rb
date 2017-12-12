@@ -11,7 +11,7 @@ module GraphQL
             define_belongs_to(type_defn, field_name, model_class, association_name, association)
           elsif association.association_class == ActiveRecord::Associations::HasOneAssociation ||
                 association.association_class == ActiveRecord::Associations::HasManyAssociation
-            define_has_many(type_defn, field_name, model_class, association_name, association)
+            define_has_one_or_many(type_defn, field_name, model_class, association_name, association)
           end
         end
 
@@ -35,11 +35,14 @@ module GraphQL
           GraphQL::Define::AssignObjectField.call(type_defn, field_name, type: type, property: property)
         end
 
-        def self.define_has_many(type_defn, field_name, _model_class, association_name, association)
+        def self.define_has_one_or_many(type_defn, field_name, _model_class, association_name, association)
           kwargs = {}
 
           kwargs[:type] = "Types::#{association.klass}Type".constantize
-          kwargs[:type] = kwargs[:type].to_non_null_type.to_list_type
+
+          if association.association_class == ActiveRecord::Associations::HasManyAssociation
+            kwargs[:type] = kwargs[:type].to_non_null_type.to_list_type
+          end
 
           begin
             function_class = Sugar.get_resolver_function(field_name)
