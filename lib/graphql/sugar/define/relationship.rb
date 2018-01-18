@@ -10,7 +10,8 @@ module GraphQL
           if association.association_class == ActiveRecord::Associations::BelongsToAssociation
             define_belongs_to(type_defn, field_name, model_class, association_name, association)
           elsif association.association_class == ActiveRecord::Associations::HasOneAssociation ||
-                association.association_class == ActiveRecord::Associations::HasManyAssociation
+                association.association_class == ActiveRecord::Associations::HasManyAssociation ||
+                association.association_class == ActiveRecord::Associations::HasManyThroughAssociation
             define_has_one_or_many(type_defn, field_name, model_class, association_name, association)
           end
         end
@@ -40,7 +41,8 @@ module GraphQL
 
           kwargs[:type] = "Types::#{association.klass}Type".constantize
 
-          if association.association_class == ActiveRecord::Associations::HasManyAssociation
+          if association.association_class == ActiveRecord::Associations::HasManyAssociation ||
+            association.association_class == ActiveRecord::Associations::HasManyThroughAssociation
             kwargs[:type] = kwargs[:type].to_non_null_type.to_list_type
           end
 
