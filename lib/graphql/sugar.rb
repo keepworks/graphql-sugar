@@ -79,6 +79,7 @@ module GraphQL
       column_validators.any? do |validator|
         validator.class == ActiveRecord::Validations::PresenceValidator &&
           !validator.options[:allow_nil] &&
+          !validator.options[:allow_blank] &&
           !validator.options.key?(:if) &&
           !validator.options.key?(:unless)
       end
