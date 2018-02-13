@@ -7,8 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ## [0.1.5] - 2018-02-13
-+### Fixed
-+- Add checks for `allow_blank` and `allow_nil` (#3)
+### Fixed
+- Add checks for `allow_blank` and `allow_nil` (#3)
 
 ## [0.1.4] - 2018-01-26
 ### Fixed
