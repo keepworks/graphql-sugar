@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.1.6] - 2018-05-18
 ### Fixed
-- Support for MySQL by conditionally checking Postgres-specific `array?`
+- Support for MySQL by conditionally checking PostgreSQL-specific `array?`
 
 ## [0.1.5] - 2018-02-13
 ### Fixed
@@ -37,7 +37,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - First release of this gem
 
-[Unreleased]: https://github.com/keepworks/graphql-sugar/compare/v0.1.5...HEAD
+[Unreleased]: https://github.com/keepworks/graphql-sugar/compare/v0.1.6...HEAD
+[0.1.6]: https://github.com/keepworks/graphql-sugar/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/keepworks/graphql-sugar/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/keepworks/graphql-sugar/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/keepworks/graphql-sugar/compare/v0.1.2...v0.1.3
