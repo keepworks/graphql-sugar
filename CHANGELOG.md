@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.1.6] - 2018-05-18
+### Fixed
+- Support for MySQL by conditionally checking Postgres-specific `array?`
+
 ## [0.1.5] - 2018-02-13
 ### Fixed
 - Add checks for `allow_blank` and `allow_nil` (#3)
