@@ -56,7 +56,7 @@ Create a [Resolver](#resolvers):
 class PostResolver < ApplicationResolver
   parameter :id, !types.ID
 
-  type Types::PostType.to_non_null_type
+  type Types::PostType.to_non_null_type // If `type` is not set, it is automatically determined to be `Types::PostType`
 
   def resolve
     Post.find(params[:id])
