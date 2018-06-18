@@ -56,8 +56,6 @@ Create a [Resolver](#resolvers):
 class PostResolver < ApplicationResolver
   parameter :id, !types.ID
 
-  type Types::PostType.to_non_null_type # If `type` is not set, it is automatically determined to be `Types::PostType`
-
   def resolve
     Post.find(params[:id])
   end
@@ -95,7 +93,7 @@ Create a [Mutator](#mutators):
 class CreatePostMutator < ApplicationMutator
   parameter :input, !Inputs::PostInputType
 
-  type Types::PostType.to_non_null_type
+  type !Types::PostType
 
   def mutate
     Post.create!(params[:input])
