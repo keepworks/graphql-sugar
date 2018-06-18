@@ -58,7 +58,7 @@ module GraphQL
                GRAPHQL_TYPE_MAPPING[column_details.type] || GraphQL::STRING_TYPE
              end
 
-      type = type.to_list_type if column_details.array?
+      type = type.to_list_type if column_details.respond_to?(:array?) && column_details.array?
 
       if enforce_non_null
         is_not_null = !column_details.null
