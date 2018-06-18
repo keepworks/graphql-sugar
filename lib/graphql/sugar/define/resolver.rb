@@ -8,7 +8,7 @@ module GraphQL
           kwargs[:function] ||= function_class.new
           kwargs[:resolve] ||= ->(obj, args, ctx) { function_class.new.call(obj, args, ctx) }
 
-          raise "You can define `type` either within #{function_class} or as an argument for #{field_name} field" if kwargs[:function].type && type_or_field
+          raise "You can define `type` either within #{function_class} or as an argument for #{field_name} field, but not both." if kwargs[:function].type && type_or_field
 
           if type_or_field.nil? && kwargs[:function].type.nil?
             # Automatically determine type
