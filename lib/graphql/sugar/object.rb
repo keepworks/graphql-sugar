@@ -55,7 +55,8 @@ module GraphQL
           key_type = GraphQL::ID_TYPE
           key_property = association.foreign_key.to_sym
 
-          type = "Types::#{association.klass}Type".constantize
+          association_type = "#{association.klass}"
+          type = "Types::#{association_type.gsub('::', '')}Type".constantize
           property = association_name.to_sym
 
           key_column_details = Sugar.get_column_details(@model_class, association.foreign_key)
@@ -66,7 +67,8 @@ module GraphQL
         end
 
         def define_has_one_or_many(field_name, association_name, association)
-          type = "Types::#{association.klass}Type".constantize
+          association_type = "#{association.klass}"
+          type = "Types::#{association_type.gsub('::', '')}Type".constantize
           is_null = true
 
           if association.association_class == ActiveRecord::Associations::HasManyAssociation ||
