@@ -1,20 +1,36 @@
 module GraphQL
   module Sugar
     module Object
+      COMMON_ATTRIBUTES = [:id, :created_at, :updated_at]
+
       def self.included(base)
         base.extend ClassMethods
       end
 
       module ClassMethods
+        def inherited(klass)
+          derived_model_class = klass.name.demodulize.gsub('Type', '').safe_constantize
+          klass.instance_variable_set(:@model_class, derived_model_class)
+          klass.instance_variable_set(:@attributes_initialized, Set.new)
+        end
+
         def model_class(model_class)
           @model_class = model_class
+          initialize_common_attributes unless all_initial_attributes_added?
+        end
 
-          common_attribute_names = [:id, :created_at, :updated_at]
-          common_attribute_names.each(&method(:attribute))
+        def initialize_common_attributes
+          COMMON_ATTRIBUTES.each do |_attribute|
+            @attributes_initialized.add(_attribute)
+            attribute(_attribute)
+          end
         end
 
         def attribute(name, return_type_expr = nil, desc = nil, **kwargs, &block)
           raise "You must define a `model_class` first in `#{self.name}`." if @model_class.blank?
+
+          initialize_common_attributes if @attributes_initialized.exclude?(name) && !all_initial_attributes_added?
+          @attributes_initialized.add(name)
 
           if return_type_expr.nil?
             return_type_expr = Sugar.get_graphql_type(@model_class, name.to_s)
@@ -27,6 +43,12 @@ module GraphQL
           end
 
           field(name, return_type_expr, desc, **kwargs, &block)
+        end
+
+        def all_initial_attributes_added?
+          COMMON_ATTRIBUTES.all? do |attribute|
+            @attributes_initialized.include?(attribute)
+          end
         end
 
         def attributes(*names)
