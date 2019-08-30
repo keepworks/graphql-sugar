@@ -4,12 +4,12 @@ require 'graphql/datetime_type'
 module GraphQL
   module Sugar
     GRAPHQL_TYPE_MAPPING = {
-      integer: GraphQL::INT_TYPE,
-      float: GraphQL::FLOAT_TYPE,
-      decimal: GraphQL::FLOAT_TYPE,
-      boolean: GraphQL::BOOLEAN_TYPE,
-      string: GraphQL::STRING_TYPE,
-      datetime: GraphQL::DATETIME_TYPE
+      integer:  GraphQL::INT_TYPE,
+      float:    GraphQL::FLOAT_TYPE,
+      decimal:  GraphQL::FLOAT_TYPE,
+      boolean:  GraphQL::BOOLEAN_TYPE,
+      string:   GraphQL::STRING_TYPE,
+      datetime: GraphQL::DATETIME_TYPE,
     }.freeze
 
     def self.get_resolver_graphql_type(field_name)
