@@ -16,7 +16,8 @@ module GraphQL
         # However, extended Field DSL (specified using `GraphQL::Field.accepts_definitions(...)`)
         # is not available within Functions. Therefore, re-defining it here.
         def parameter(name, *args, **kwargs, &block)
-          computed_type = GRAPHQL_TYPE_MAPPING[args.first]
+          computed_type = GraphQL.const_get("#{args.first.to_s.upcase}_TYPE")
+          computed_type = GRAPHQL_TYPE_MAPPING[args.first]                    if args.first.is_a? Symbol
           computed_type = GraphQL::ID_TYPE if name == :id
 
           null_argument     = !!!kwargs.delete(:null)     # reverting nil to false and then to true
