@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.1.8] - 2019-08-30
+### Enhancement
+- Move over to the more verbose Rails style of defining data type for `parameter`. Use `:string`, `:float`, `:decimal`, `:boolean` and `:datetime` instead of old style of using `types.String`, `types.Float`, etc.
+
+## [0.1.7] - 2019-08-27
+### Enhancement
+- Add automatic type detection for `GraphQL::Sugar::Object` to calculate the trivial classes.
+
 ## [0.1.6] - 2018-05-18
 ### Fixed
 - Support for MySQL by conditionally checking PostgreSQL-specific `array?`
