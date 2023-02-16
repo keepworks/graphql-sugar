@@ -1,5 +1,4 @@
 require 'graphql/sugar/version'
-require 'graphql/datetime_type'
 
 module GraphQL
   module Sugar
