@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.1.7] - 2023-02-17
+### Changed
+- Support graphql-ruby 1.11
+- Removed custom DATETIME_TYPE
+
 ## [0.1.6] - 2018-05-18
 ### Fixed
 - Support for MySQL by conditionally checking PostgreSQL-specific `array?`
